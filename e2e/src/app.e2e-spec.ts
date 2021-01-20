@@ -50,6 +50,7 @@ describe('Casos de ejemplo', () => { // Engloba todas las pruebas (it) de un cas
   it('Debe mostrar un error si el campo nombre tiene menos 4 letras', () => {
     page.navigateToReactivePage();
     page.setName('Jorg');
+    page.clickSaveButton();
     expect(page.getTextOfEspecificError(0)).toEqual('Ingresa al menos 5 letras :)'); // esperamos que aparezca el error
   });
 
@@ -77,7 +78,7 @@ describe('Casos de ejemplo', () => { // Engloba todas las pruebas (it) de un cas
   // EJERCICIO SUGERIDO
   // Consulte las pruebas del tutorial en la página de protractor https://www.protractortest.org/#/tutorial
   // (si puede realice las pruebas del tutorial en un archivo de este proyecto ignorando las partes del archivo de configuración
-  // porque est proyecto ya cuenta con las configuraciones necesarias)
+  // porque este proyecto ya cuenta con las configuraciones necesarias)
 
   afterEach(async () => { // Este método se ejecuta despues de cada prueba
     // Revisa si no hay errores severos emitidos por el navegador
