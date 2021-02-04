@@ -8,7 +8,7 @@ browser.driver.controlFlow().execute = function stop() {
   const args = arguments;
 
   origFn.call(browser.driver.controlFlow(), () => {
-    return protractor.promise.delayed(0); // tiempo de retraso entre cada paso
+    return protractor.promise.delayed(5); // tiempo de retraso entre cada paso
   });
 
   return origFn.apply(browser.driver.controlFlow(), args);
@@ -20,13 +20,12 @@ describe('Casos de ejemplo', () => { // Engloba todas las pruebas (it) de un cas
   beforeEach(() => { // Este método se ejecuta antes de cada prueba
     page = new ReactivePage(); // crea un objeto de la página reactive forms
   });
-
   // si ponemos xit o xdescribe jasmine ignorara la prueba o el conjunto de pruebas
   it('Debe poder ir a la pagina de reactive forms', () => { // primera prueba de ejemplo
     page.navigateToReactivePage();
     expect(browser.getCurrentUrl()).toEqual(browser.baseUrl + 'reactive'); // comprobamos que carge la página
   });
-
+  
   it('Debe mostrar el título de la página', async () => {
     page.navigateToReactivePage();
     const title = await page.getTitleText();
@@ -59,6 +58,49 @@ describe('Casos de ejemplo', () => { // Engloba todas las pruebas (it) de un cas
     await page.clickAddButton();
     expect(page.deleteHobbieButtonIsPresent()).toBeTruthy(); // esperamos que el botón este presente en la página
   });
+ 
+  //Practica 
+  //1
+  it('Debe limpiar todos los campos una vez le demos en el boton guardar', async () => {
+    page.navigateToReactivePage();
+    await browser.waitForAngular();
+    await page.setName('fernando');
+    await page.setApellido('Hernandes');
+    await page.setEmail('djahd@yahoo.com')
+    await page.setUser('bletu78');
+    await page.setPassword('123456');
+    await page.setReppassword('123456');
+    await page.setAddres('México');
+    await page.setAdress2('México');
+    page.clickSaveButton();
+    expect(page.getName()).toEqual('');
+    expect(page.getApellido()).toEqual('');
+    expect(page.getEmail()).toEqual('');
+    expect(page.getUser()).toEqual('');
+    expect(page.getPassword()).toEqual('');
+    expect(page.getReppassword()).toEqual('');
+    expect(page.getAddres()).toEqual('');
+    expect(page.getAdress2()).toEqual('');
+  });
+
+  //2
+  it('Probar que el botón de borrar hobbie funciona', async () => {
+    page.navigateToReactivePage();
+    await page.clickAddButton();
+    await page.clickdeleteButtonHobbies();
+    expect(page.deleteHobbieButtonIsPresent()).toBeFalsy// esperamos que el botón este presente en la página
+  });
+
+  //3
+  it('Probar que el e-mail esta bien escrito', async () => {
+    page.navigateToReactivePage();
+    const verificar = ['jorge', 'jorge@' , 'jorge@ho'];
+    verificar.forEach(async (element) => {
+      await page.setEmail(element);
+      expect(page.getTextOfEspecificError(0)).toEqual('Correo obligatorio ;)');
+    });
+  });
+  ///
 
   // ******* EJERCICIOS PARA PRACTICAR ************
   // 1. llenar todos los campos del formulario reactivo correctamente, presionar el botón guardar y verificar que se
